@@ -9,7 +9,7 @@ echo "id,name,desc,age" > big.csv
 for i in `seq 1 5`; do node.exe -e "process.stdout.write('$i,erick-$i,$i-text,$i\n'.repeat(1e5))" >> big.csv; done
 ```
 This creates the csv file to read. 
-2. Then you run the command ```npm start``` and its going to send the data from the CSV file to the server (webapi App) and you can limit the request per second in the [.env file](data-integration/src/.env.example) of the data-integration App. 
+2. Then you run the command ```npm start``` and its going to send the data from the CSV file to the server (webapi App) and you can limit the request per second in the [.env file](data-integration/.env.example) of the data-integration App. 
 3. And that's it. 
 
 Now let's go with the webapi App:
