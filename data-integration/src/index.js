@@ -7,7 +7,7 @@ for i in `seq 1 5`; do node.exe -e "process.stdout.write('$i,erick-$i,$i-text,$i
 */
 let before = performance.now();
 
-import { createReadStream } from 'node:fs'
+import { createReadStream, createWriteStream } from 'node:fs'
 import { pipeline } from 'node:stream/promises'
 import csvtojson from 'csvtojson'
 import { Transform } from 'node:stream' // Usar para limpiar la data con Transform
@@ -15,7 +15,9 @@ import { randomUUID } from 'node:crypto'//Genera numeros randoms usados para cre
 import { log, makeRequest } from './util.js'
 import ThrottleRequest from './throttle.js'
 
-const throttle = new ThrottleRequest({ objectMode: true, requestsPerSecond: 50000 })
+let request_per_second = process.env.REQUEST_PER_SECOND
+
+const throttle = new ThrottleRequest({ objectMode: true, requestsPerSecond: request_per_second })
 
 //Transform se usa para editar la data o hacer algo mientras se este leyendo la data. En este caso se toma el performance y se reemplaza por los numeros de la data.
 
@@ -35,7 +37,6 @@ const dataProcessor = new Transform({
     }
 })
 
-
 await pipeline(
     createReadStream('big.csv'),
     csvtojson(),
@@ -54,4 +55,4 @@ await pipeline(
         }
     }
 )
-console.log('total es: ', performance.now());
+
